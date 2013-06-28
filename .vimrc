@@ -14,3 +14,8 @@ set shiftwidth=2
 colorscheme koehler
 nmap <silent> ,n :NERDTreeToggle<CR>
 nmap ,wt :%s/\s\+$//<cr> "Remove trailing whitespace
+set statusline=[%n]\ %.200F\ %(\ %M%R%H)%)\ \@(%l\,%c%V)\ %P
+let loaded_matchparen = 0
+set incsearch
+set ignorecase
+au FileType gitcommit set tw=72
