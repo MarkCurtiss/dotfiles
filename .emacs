@@ -55,3 +55,6 @@ vi style of % jumping to matching brace."
 
 ;;turn on mark highlighting
 (transient-mark-mode t)
+
+; trim trailing whitespace
+(global-set-key (kbd "C-c w") 'delete-trailing-whitespace)
