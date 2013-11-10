@@ -58,3 +58,6 @@ vi style of % jumping to matching brace."
 
 ; trim trailing whitespace
 (global-set-key (kbd "C-c w") 'delete-trailing-whitespace)
+
+;;let's see those column numbers!
+(column-number-mode t)
