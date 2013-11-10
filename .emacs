@@ -50,6 +50,27 @@ vi style of % jumping to matching brace."
           (t (self-insert-command (or arg 1))))))
 (global-set-key (kbd "%") 'goto-match-paren)
 
+(defun buffer-exists (bufname) (not (eq nil (get-buffer bufname))))
+
+(defun run-test (arg)
+  (interactive "p")
+  (let ((output-buff "*test-output*")
+        (args (concat
+               (file-name-directory (buffer-file-name))
+               "spec/"
+               (file-name-nondirectory (file-name-sans-extension (buffer-file-name)))
+               "_spec."
+               (file-name-extension (buffer-file-name)))))
+
+    (if (buffer-exists output-buff)
+        (kill-buffer output-buff))
+
+    (start-process "test" (generate-new-buffer output-buff) "~/sspec/bin/sspec" args)
+    (switch-to-buffer-other-window output-buff))
+  )
+
+(global-set-key (kbd "C-c T") 'run-test)
+
 ;;tabs == spaces
 (setq indent-tabs-mode nil)
 
@@ -58,3 +79,6 @@ vi style of % jumping to matching brace."
 
 ; trim trailing whitespace
 (global-set-key (kbd "C-c w") 'delete-trailing-whitespace)
+
+;;let's see those column numbers!
+(column-number-mode t)
