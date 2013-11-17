@@ -68,8 +68,30 @@ vi style of % jumping to matching brace."
     (start-process "test" (generate-new-buffer output-buff) "~/sspec/bin/sspec" args)
     (switch-to-buffer-other-window output-buff))
   )
-
 (global-set-key (kbd "C-c T") 'run-test)
+
+(defun go-to-test (arg)
+  (interactive "p")
+
+  (let ((spec-file (concat
+                    (file-name-directory (buffer-file-name))
+                    "spec/"
+                    (file-name-nondirectory (file-name-sans-extension (buffer-file-name)))
+                    "_spec."
+                    (file-name-extension (buffer-file-name)))))
+
+    (switch-to-buffer (find-file spec-file))))
+(global-set-key (kbd "C-c f t") 'go-to-test)
+
+(defun go-to-implementation (arg)
+    (interactive "p")
+
+  (let ((implementation-file (concat
+                              "../"
+                              (replace-regexp-in-string "_spec" "" (file-name-nondirectory (buffer-file-name))))))
+
+    (switch-to-buffer (find-file implementation-file))))
+(global-set-key (kbd "C-c f i") 'go-to-implementation)
 
 ;;tabs == spaces
 (setq indent-tabs-mode nil)
