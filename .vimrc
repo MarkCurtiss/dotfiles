@@ -1,6 +1,8 @@
 set nu
 set laststatus=2
-:map ,b \be
+
+let mapleader=","
+nmap <leader>b :BufExplorer<cr>
 :map S i<CR><ESC>
 syn on
 filetype indent plugin on
@@ -19,3 +21,6 @@ let loaded_matchparen = 0
 set incsearch
 set ignorecase
 au FileType gitcommit set tw=72
+:map ,T :!RAILS_ENV=test bundle exec rake spec SPEC=%:p<cr>
+
+:map ,h :%s/\(\w\+\): /:\1 => /g<CR>
