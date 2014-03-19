@@ -50,8 +50,57 @@ vi style of % jumping to matching brace."
           (t (self-insert-command (or arg 1))))))
 (global-set-key (kbd "%") 'goto-match-paren)
 
+(defun buffer-exists (bufname) (not (eq nil (get-buffer bufname))))
+
+(defun run-test (arg)
+  (interactive "p")
+  (let ((output-buff "*test-output*")
+        (args (concat
+               (file-name-directory (buffer-file-name))
+               "spec/"
+               (file-name-nondirectory (file-name-sans-extension (buffer-file-name)))
+               "_spec."
+               (file-name-extension (buffer-file-name)))))
+
+    (if (buffer-exists output-buff)
+        (kill-buffer output-buff))
+
+    (start-process "test" (generate-new-buffer output-buff) "~/sspec/bin/sspec" args)
+    (switch-to-buffer-other-window output-buff))
+  )
+(global-set-key (kbd "C-c T") 'run-test)
+
+(defun go-to-test (arg)
+  (interactive "p")
+
+  (let ((spec-file (concat
+                    (file-name-directory (buffer-file-name))
+                    "spec/"
+                    (file-name-nondirectory (file-name-sans-extension (buffer-file-name)))
+                    "_spec."
+                    (file-name-extension (buffer-file-name)))))
+
+    (switch-to-buffer (find-file spec-file))))
+(global-set-key (kbd "C-c f t") 'go-to-test)
+
+(defun go-to-implementation (arg)
+    (interactive "p")
+
+  (let ((implementation-file (concat
+                              "../"
+                              (replace-regexp-in-string "_spec" "" (file-name-nondirectory (buffer-file-name))))))
+
+    (switch-to-buffer (find-file implementation-file))))
+(global-set-key (kbd "C-c f i") 'go-to-implementation)
+
 ;;tabs == spaces
 (setq indent-tabs-mode nil)
 
 ;;turn on mark highlighting
 (transient-mark-mode t)
+
+; trim trailing whitespace
+(global-set-key (kbd "C-c w") 'delete-trailing-whitespace)
+
+;;let's see those column numbers!
+(column-number-mode t)
