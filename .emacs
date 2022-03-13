@@ -118,3 +118,10 @@ vi style of % jumping to matching brace."
 
 ;;let's see those column numbers!
 (column-number-mode t)
+
+(define-globalized-minor-mode my-global-linum-mode linum-mode
+  (lambda ()
+    (unless (or (minibufferp)
+                (derived-mode-p 'doc-view-mode 'shell-mode))
+      (linum-mode 1))))
+(my-global-linum-mode 1)
